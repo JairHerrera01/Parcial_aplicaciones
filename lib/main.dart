@@ -35,12 +35,17 @@ class _ContadorPalabrasState extends State<ContadorPalabras> {
     String texto = _controller.text.toLowerCase();
     
     // Eliminar caracteres especiales y normalizar texto
-    texto = texto.replaceAll(RegExp(r'[^\w\s]'), '');
-    texto = texto.replaceAll('á', 'a');
-    texto = texto.replaceAll('é', 'e');
-    texto = texto.replaceAll('í', 'i');
-    texto = texto.replaceAll('ó', 'o');
-    texto = texto.replaceAll('ú', 'u');
+    texto = texto.replaceAll(RegExp(r'[^\w\sáéíóúÁÉÍÓÚ]'), '');
+    
+    // Normalizar acentos
+    Map<String, String> acentos = {
+      'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u',
+      'Á': 'a', 'É': 'e', 'Í': 'i', 'Ó': 'o', 'Ú': 'u'
+    };
+    
+    for (var entrada in acentos.entries) {
+      texto = texto.replaceAll(entrada.key, entrada.value);
+    }
     
     // Dividir el texto en palabras
     List<String> palabras = texto.split(RegExp(r'\s+'))
